@@ -1,0 +1,6 @@
+{% extends "web/base.html" %}
+{% block content %}
+<h2>Order Placed</h2>
+<p>Order #{{ order.id }} placed successfully. Total: ${{ order.total_price }}</p>
+<p><a href="/">Back to home</a></p>
+{% endblock %}

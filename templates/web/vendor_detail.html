@@ -1,0 +1,20 @@
+{% extends "web/base.html" %}
+{% block content %}
+<h2>{{ vendor.restaurant_name }}</h2>
+<p>{{ vendor.location }}</p>
+<h3>Menu</h3>
+{% for item in menu_items %}
+  <div class="menu-item">
+    <strong>{{ item.name }}</strong> — ${{ item.price }}
+    <p>{{ item.description }}</p>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="menu_item_id" value="{{ item.id }}" />
+      <label>Qty <input type="number" name="quantity" value="1" min="1" /></label>
+      <button class="btn" type="submit">Add to cart</button>
+    </form>
+  </div>
+{% empty %}
+  <p>No menu items.</p>
+{% endfor %}
+{% endblock %}

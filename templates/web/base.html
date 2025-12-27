@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>GebetaEats Demo</title>
+  <style>
+    body{font-family: Arial, sans-serif; margin:20px}
+    header{margin-bottom:20px}
+    .vendor, .menu-item{border:1px solid #ddd;padding:10px;margin:6px}
+    .btn{padding:6px 10px;background:#2b7cff;color:#fff;border:none;border-radius:4px}
+  </style>
+</head>
+<body>
+<header>
+  <h1><a href="/">GebetaEats Demo</a></h1>
+  <nav>
+    <a href="/">Home</a> |
+    <a href="/cart/">Cart</a> |
+    <a href="/vendor/dashboard/">Vendor Dashboard</a> |
+    <a href="/rider/dashboard/">Rider Dashboard</a>
+  </nav>
+</header>
+<main>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

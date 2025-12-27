@@ -7,10 +7,21 @@ from .models import Vendor
 from .serializers import VendorSerializer
 
 
-class VendorListView(generics.ListAPIView):
+class VendorListView(generics.ListCreateAPIView):
     queryset = Vendor.objects.select_related("user").all()
     serializer_class = VendorSerializer
-    permission_classes = [permissions.AllowAny]
+
+    def get_permissions(self):
+        if self.request.method == "POST":
+            return [IsVendor()]
+        return [permissions.AllowAny()]
+
+    def perform_create(self, serializer):
+        # Only vendor users may create a vendor profile for themselves.
+        vendor_profile = getattr(self.request.user, "vendor_profile", None)
+        if vendor_profile is not None:
+            raise PermissionDenied("User already has a vendor profile.")
+        serializer.save(user=self.request.user)
 
 
 class VendorDetailView(generics.RetrieveAPIView):

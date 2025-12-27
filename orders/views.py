@@ -87,6 +87,22 @@ class OrderStatusUpdateView(generics.UpdateAPIView):
         status_value = request.data.get("status")
         if status_value not in Order.Status.values:
             return Response({"status": "Invalid status"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Enforce allowed transitions
+        allowed_transitions = {
+            Order.Status.PENDING: {Order.Status.ACCEPTED, Order.Status.CANCELLED},
+            Order.Status.ACCEPTED: {Order.Status.PREPARING, Order.Status.CANCELLED},
+            Order.Status.PREPARING: {Order.Status.OUT_FOR_DELIVERY},
+            Order.Status.OUT_FOR_DELIVERY: {Order.Status.DELIVERED},
+            Order.Status.DELIVERED: set(),
+            Order.Status.CANCELLED: set(),
+        }
+
+        current = order.status
+        allowed = allowed_transitions.get(current, set())
+        if status_value not in allowed:
+            return Response({"detail": f"Invalid transition from {current} to {status_value}"}, status=status.HTTP_400_BAD_REQUEST)
+
         order.status = status_value
         order.save(update_fields=["status", "updated_at"])
         return Response(OrderSerializer(order).data)

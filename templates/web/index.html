@@ -1,0 +1,13 @@
+{% extends "web/base.html" %}
+{% block content %}
+<h2>Vendors</h2>
+{% for v in vendors %}
+  <div class="vendor">
+    <h3>{{ v.restaurant_name }}</h3>
+    <p>{{ v.location }}</p>
+    <a class="btn" href="/vendor/{{ v.id }}/">View Menu</a>
+  </div>
+{% empty %}
+  <p>No vendors yet.</p>
+{% endfor %}
+{% endblock %}

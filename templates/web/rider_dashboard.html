@@ -1,0 +1,12 @@
+{% extends "web/base.html" %}
+{% block content %}
+<h2>Rider Dashboard</h2>
+{% for d in deliveries %}
+  <div style="border:1px solid #ccc;padding:8px;margin:6px">
+    <strong>Delivery #{{ d.id }}</strong> for Order #{{ d.order.id }} — {{ d.status }}
+    <p>Order total: ${{ d.order.total_price }}</p>
+  </div>
+{% empty %}
+  <p>No deliveries assigned yet.</p>
+{% endfor %}
+{% endblock %}
