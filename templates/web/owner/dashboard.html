@@ -1,0 +1,35 @@
+{% extends 'web/base.html' %}
+
+{% block content %}
+  <h2 data-animate>Owner Dashboard</h2>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card p-3" data-animate>
+        <h5>My Restaurant</h5>
+        {% if restaurant %}
+          <h4>{{ restaurant.name }}</h4>
+          <p>{{ restaurant.description }}</p>
+          <a class="btn btn-outline-primary" href="{% url 'owner_restaurant' %}">Edit Restaurant</a>
+          <a class="btn btn-outline-success ms-2" href="{% url 'owner_menu_list' %}">Manage Menu</a>
+        {% else %}
+          <p>You don't have a restaurant yet.</p>
+          <a class="btn btn-primary" href="{% url 'owner_restaurant' %}">Create Restaurant</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-3" data-animate>
+        <h5>Recent Orders</h5>
+        {% if orders %}
+          <ul>
+            {% for o in orders|slice:10 %}
+              <li>Order #{{ o.id }} — {{ o.total_price }} — {{ o.get_status_display }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>No orders yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

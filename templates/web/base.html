@@ -1,27 +1,61 @@
 <!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>GebetaEats Demo</title>
-  <style>
-    body{font-family: Arial, sans-serif; margin:20px}
-    header{margin-bottom:20px}
-    .vendor, .menu-item{border:1px solid #ddd;padding:10px;margin:6px}
-    .btn{padding:6px 10px;background:#2b7cff;color:#fff;border:none;border-radius:4px}
-  </style>
-</head>
-<body>
-<header>
-  <h1><a href="/">GebetaEats Demo</a></h1>
-  <nav>
-    <a href="/">Home</a> |
-    <a href="/cart/">Cart</a> |
-    <a href="/vendor/dashboard/">Vendor Dashboard</a> |
-    <a href="/rider/dashboard/">Rider Dashboard</a>
-  </nav>
-</header>
-<main>
-  {% block content %}{% endblock %}
-</main>
-</body>
-</html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GebetaEats - Simple</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="/">GebetaEats</a>
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="{% url 'cart' %}" id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                My Cart <span id="cart-count" class="badge bg-success ms-1">0</span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="cartDropdown" style="min-width:300px;">
+                <li><div id="cart-preview-body">Loading...</div></li>
+              </ul>
+            </li>
+            {% if user.is_authenticated %}
+              {% if user.role == 'restaurant' %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'owner_dashboard' %}">Owner Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'owner_restaurant' %}">Manage Restaurant</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'restaurant_orders' %}">My Orders</a></li>
+              {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'my_orders' %}">My Orders</a></li>
+              {% endif %}
+              <li class="nav-item"><span class="nav-link">Hi, {{ user.username }}</span></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+              <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      {% if messages %}
+        <div id="django-messages" style="display:none">
+          {% for m in messages %}
+            <div class="msg" data-level="{{ m.tags }}">{{ m }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/ui.js' %}"></script>
+  </body>
+  </html>

@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block title %}GebetaEats Admin{% endblock %}
+{% block extrahead %}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+<style>
+  /* small adjustments for admin readability */
+  .module h2 { color: #1e8f5a; }
+</style>
+{% endblock %}

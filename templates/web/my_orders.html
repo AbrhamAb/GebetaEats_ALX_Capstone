@@ -1,0 +1,31 @@
+{% extends 'web/base.html' %}
+
+{% block content %}
+  <h2 data-animate>My Orders</h2>
+  <div class="row" data-animate>
+    {% for order in orders %}
+      <div class="col-12">
+        <div class="card p-3 mb-3">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h5>Order #{{ order.id }}</h5>
+              <div class="text-muted">Placed: {{ order.created_at }}</div>
+            </div>
+            <div class="text-end">
+              <div>Status: <strong>{{ order.get_status_display }}</strong></div>
+              <div>Total: <strong>{{ order.total_price }}</strong></div>
+            </div>
+          </div>
+          <hr>
+          <ul>
+            {% for item in order.items.all %}
+              <li>{{ item.menu_item.name }} x {{ item.quantity }} — {{ item.line_total }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% empty %}
+      <p>You have no orders yet.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

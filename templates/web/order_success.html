@@ -1,6 +1,8 @@
-{% extends "web/base.html" %}
+{% extends 'web/base.html' %}
+
 {% block content %}
-<h2>Order Placed</h2>
-<p>Order #{{ order.id }} placed successfully. Total: ${{ order.total_price }}</p>
-<p><a href="/">Back to home</a></p>
+  <h2>Order Placed</h2>
+  <p>Order #{{ order.id }} placed. Total: {{ order.total_price }}</p>
+  <p>Status: {{ order.status }}</p>
+  <a class="btn btn-primary" href="/">Continue shopping</a>
 {% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'web/base.html' %}
+
+{% block content %}
+  <h2>Incoming Orders</h2>
+  <table class="table">
+    <thead><tr><th>#</th><th>Customer</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for o in orders %}
+        <tr>
+          <td>{{ o.id }}</td>
+          <td>{{ o.user.username }}</td>
+          <td>{{ o.total_price }}</td>
+          <td>{{ o.status }}</td>
+          <td>
+            <form method="post" action="{% url 'restaurant_update_order' o.pk %}">
+              {% csrf_token %}
+              <select name="status" class="form-select d-inline" style="width:200px">
+                {% for val,label in status_choices %}
+                  <option value="{{ val }}" {% if o.status == val %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-sm btn-primary" type="submit">Update</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

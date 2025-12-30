@@ -6,6 +6,21 @@ from .models import Category, MenuItem
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = ("id", "name")
+
+
+class MenuItemSerializer(serializers.ModelSerializer):
+    restaurant = serializers.ReadOnlyField(source='restaurant.id')
+
+    class Meta:
+        model = MenuItem
+        fields = ("id", "restaurant", "category", "name",
+                  "description", "price", "image", "is_available")
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
         fields = ["id", "name"]
 
 

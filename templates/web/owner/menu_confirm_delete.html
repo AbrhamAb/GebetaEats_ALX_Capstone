@@ -1,0 +1,13 @@
+{% extends 'web/base.html' %}
+
+{% block content %}
+  <h2 data-animate>Delete Menu Item</h2>
+  <div class="card p-3" data-animate>
+    <p>Are you sure you want to delete <strong>{{ menu_item.name }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit">Yes, delete</button>
+      <a class="btn btn-secondary" href="{% url 'owner_menu_list' %}">Cancel</a>
+    </form>
+  </div>
+{% endblock %}
